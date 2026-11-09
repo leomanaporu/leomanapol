@@ -1,0 +1,1547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#050608">
+  <meta name="description" content="RESTRICTED ONION NODE // DEEP WEB SURVEILLANCE FEED // CLASSIFIED ENTRY">
+  <meta property="og:title" content="0x7F // ILLEGAL DARKNET INTRUSION">
+  <title>DARK WEB CHAMBER / ACTIVE SURVEILLANCE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #000000;
+      --surface: #080808;
+      --surface-border: #1e1e1e;
+      --white: #ffffff;
+      --white-dim: #b0b0b0;
+      --white-faint: rgba(255, 255, 255, 0.08);
+      --gray-dark: #121212;
+      --gray-mid: #242424;
+      --text-main: #e0e0e0;
+      --text-muted: #757575;
+      --mono: "Share Tech Mono", "Consolas", "Courier New", monospace;
+      --pixel: "VT323", monospace;
+      --spot-x: 50%;
+      --spot-y: 50%;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      min-height: 100svh;
+      background: var(--bg);
+      color: var(--text-main);
+      font-family: var(--mono);
+      overflow-x: hidden;
+      user-select: none;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Clean, Cinematic Monochrome Texture */
+    .crt-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 99;
+      background:
+        linear-gradient(rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.2) 50%),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.012), rgba(0, 0, 0, 0.01), rgba(255, 255, 255, 0.012));
+      background-size: 100% 3px, 6px 100%;
+      opacity: 0.28;
+    }
+
+    .crt-vignette {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 100;
+      background: radial-gradient(circle at center, transparent 60%, rgba(0, 0, 0, 0.88) 100%);
+    }
+
+    /* Calmed Ambience */
+    @keyframes gentlePulse {
+      0%, 100% { opacity: 0.95; }
+      50% { opacity: 0.4; }
+    }
+
+    .app-container {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      min-height: 100svh;
+      position: relative;
+    }
+
+    /* Monochrome Darknet Onion Browser Bar */
+    .onion-browser-bar {
+      background: #040404;
+      border-bottom: 1px solid var(--surface-border);
+      padding: 8px 20px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      z-index: 20;
+    }
+
+    .tor-network-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .status-bulb {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--white);
+      box-shadow: 0 0 6px var(--white);
+      animation: gentlePulse 2.5s ease-in-out infinite;
+    }
+
+    .onion-url-box {
+      display: flex;
+      align-items: center;
+      background: #000000;
+      border: 1px solid #222222;
+      padding: 5px 14px;
+      border-radius: 2px;
+      color: #999999;
+      font-size: 12px;
+      flex: 1;
+      max-width: 580px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .onion-url-box .circuit {
+      color: #000000;
+      background: #ffffff;
+      font-weight: bold;
+      margin-right: 8px;
+      padding: 1px 6px;
+      border-radius: 2px;
+      font-size: 10px;
+      letter-spacing: 0.06em;
+    }
+
+    .onion-url-box .url {
+      color: #cccccc;
+      letter-spacing: 0.04em;
+    }
+
+    .onion-controls {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .sound-toggle-btn {
+      background: #000000;
+      border: 1px solid #333333;
+      color: #777777;
+      font-family: inherit;
+      font-size: 11px;
+      padding: 5px 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+      border-radius: 2px;
+    }
+
+    .sound-toggle-btn:hover {
+      border-color: #ffffff;
+      color: #ffffff;
+    }
+
+    .download-demo-btn {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 5px 12px;
+      border: 1px solid #777777;
+      border-radius: 2px;
+      background: #ffffff;
+      color: #000000;
+      font: inherit;
+      font-size: 11px;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .download-demo-btn:hover,
+    .download-demo-btn:focus-visible {
+      background: #cccccc;
+      color: #000000;
+    }
+
+    .sound-toggle-btn.active,
+    .sound-toggle-btn[aria-pressed="true"] {
+      border-color: #ffffff;
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+    }
+
+    .warning-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Main Dashboard Layout (Centered Single Column) */
+    .dashboard {
+      flex: 1;
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 20px clamp(12px, 3vw, 36px);
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      position: relative;
+      z-index: 10;
+    }
+
+    /* Panel Base Styles */
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      position: relative;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.9);
+    }
+
+    .panel-header {
+      background: #0d0d0d;
+      border-bottom: 1px solid var(--surface-border);
+      padding: 9px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #888888;
+    }
+
+    .panel-header .title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #ffffff;
+    }
+
+    .panel-header .title::before {
+      content: "■";
+      color: #ffffff;
+      font-size: 8px;
+    }
+
+    .panel-header .badge-live {
+      background: #ffffff;
+      border: 1px solid #ffffff;
+      color: #000000;
+      padding: 2px 7px;
+      font-size: 9px;
+      font-weight: bold;
+      letter-spacing: 0.1em;
+      border-radius: 2px;
+    }
+
+    /* Video Surveillance Chamber */
+    .feed-container {
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cctv-stage {
+      position: relative;
+      flex: 1;
+      min-height: 480px;
+      background: #020305;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Canvas for Real-time Static Noise & Sinister Shadow */
+    #cctvCanvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.9;
+    }
+
+    /* Target Reticle Tracking the Mouse (Monochrome Precision) */
+    .target-crosshair {
+      position: absolute;
+      pointer-events: none;
+      width: 38px;
+      height: 38px;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      left: var(--spot-x);
+      top: var(--spot-y);
+      transition: width 0.15s, height 0.15s;
+      z-index: 15;
+    }
+
+    .target-crosshair::before, .target-crosshair::after {
+      content: "";
+      position: absolute;
+      background: rgba(255, 255, 255, 0.7);
+    }
+    .target-crosshair::before {
+      top: 50%; left: -3px; right: -3px; height: 1px;
+    }
+    .target-crosshair::after {
+      left: 50%; top: -3px; bottom: -3px; width: 1px;
+    }
+    .target-crosshair .coords {
+      position: absolute;
+      top: -16px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 9px;
+      color: #ffffff;
+      white-space: nowrap;
+      text-shadow: 0 0 4px #000;
+      background: #000000;
+      border: 1px solid #333333;
+      padding: 1px 5px;
+      border-radius: 2px;
+    }
+
+    /* Surveillance HUD Overlays (Monochrome High-Contrast) */
+    .cctv-hud-top {
+      position: absolute;
+      top: 14px;
+      left: 16px;
+      right: 16px;
+      display: flex;
+      justify-content: space-between;
+      pointer-events: none;
+      z-index: 12;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-shadow: 0 0 6px #000, 1px 1px 2px #000;
+      color: #ffffff;
+    }
+
+    .cctv-cam-id {
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: bold;
+    }
+
+    .rec-dot {
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #ffffff;
+      box-shadow: 0 0 8px #ffffff;
+      animation: gentlePulse 2s ease-in-out infinite;
+    }
+
+    .cctv-hud-bottom {
+      position: absolute;
+      bottom: 14px;
+      left: 16px;
+      right: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      pointer-events: none;
+      z-index: 12;
+      font-size: 10px;
+      color: #aaaaaa;
+      text-shadow: 0 0 6px #000;
+    }
+
+    /* Warning Overlay Message in Feed (Black & White Classified Node) */
+    .feed-warning-curtain {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.94);
+      backdrop-filter: blur(4px);
+      z-index: 25;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px;
+      text-align: center;
+      border: 1px solid #222222;
+      transition: opacity 0.5s, visibility 0.5s;
+    }
+
+    .feed-warning-curtain.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .skull-icon {
+      font-size: 32px;
+      color: #ffffff;
+      margin-bottom: 12px;
+      text-shadow: 0 0 16px rgba(255, 255, 255, 0.7);
+    }
+
+    .warning-glitch-title {
+      font-size: clamp(20px, 3.2vw, 28px);
+      color: #ffffff;
+      margin: 0 0 12px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-shadow: 0 0 14px rgba(255, 255, 255, 0.5);
+    }
+
+    .warning-body {
+      max-width: 580px;
+      color: #aaaaaa;
+      font-size: 13px;
+      line-height: 1.7;
+      margin-bottom: 24px;
+    }
+
+    .warning-body span {
+      color: #ffffff;
+      font-weight: bold;
+      text-decoration: underline;
+    }
+
+    /* Buttons (Black and White Stark Contrast) */
+    .btn-danger {
+      background: #000000;
+      border: 1px solid #ffffff;
+      color: #ffffff;
+      font-family: inherit;
+      font-size: 13px;
+      letter-spacing: 0.16em;
+      padding: 14px 28px;
+      text-transform: uppercase;
+      cursor: pointer;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+      transition: all 0.2s;
+      position: relative;
+    }
+
+    .btn-danger:hover {
+      background: #ffffff;
+      color: #000000;
+      box-shadow: 0 0 30px rgba(255, 255, 255, 0.6);
+      transform: translateY(-1px);
+    }
+
+    .btn-download-landing {
+      background: #000000;
+      border: 1px solid #888888;
+      color: #cccccc;
+      font-family: inherit;
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      padding: 10px 22px;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .btn-download-landing:hover {
+      border-color: #ffffff;
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.25);
+      transform: translateY(-1px);
+    }
+
+    .btn-download-landing:active {
+      transform: translateY(1px);
+    }
+
+    .btn-action-feed {
+      display: none;
+      background: #000000;
+      border: 1px solid #ffffff;
+      color: #ffffff;
+      font-family: inherit;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      padding: 10px 18px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s;
+      pointer-events: auto;
+    }
+
+    .btn-action-feed:hover {
+      background: #ffffff;
+      color: #000000;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+    }
+
+    .btn-action-feed.visible {
+      display: inline-block;
+    }
+
+    /* Terminal Console Stream (Monochrome Output) */
+    .terminal-box {
+      background: #030303;
+      border-top: 1px solid var(--surface-border);
+      padding: 12px 16px;
+      font-size: 11px;
+      line-height: 1.6;
+      color: #cccccc;
+      max-height: min(36svh, 240px);
+      min-height: 104px;
+      overflow-y: auto;
+      font-family: var(--mono);
+    }
+
+    .terminal-output {
+      min-height: 38px;
+    }
+
+    .terminal-line {
+      display: block;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .shell-form {
+      display: flex;
+      align-items: stretch;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .shell-prompt {
+      align-self: center;
+      color: #ffffff;
+      white-space: nowrap;
+    }
+
+    .shell-input {
+      flex: 1;
+      min-width: 0;
+      min-height: 42px;
+      padding: 8px 10px;
+      border: 1px solid #444444;
+      border-radius: 2px;
+      background: #000000;
+      color: #ffffff;
+      font: inherit;
+    }
+
+    .shell-input:focus-visible,
+    .shell-submit:focus-visible {
+      outline: 2px solid #ffffff;
+      outline-offset: 2px;
+    }
+
+    .shell-submit {
+      min-width: 64px;
+      min-height: 42px;
+      border: 1px solid #ffffff;
+      border-radius: 2px;
+      background: #ffffff;
+      color: #000000;
+      font: inherit;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .terminal-line.alert {
+      color: #000000;
+      background: #ffffff;
+      font-weight: bold;
+      padding: 0 4px;
+      display: inline-block;
+      margin-top: 2px;
+    }
+
+    /* Footbar */
+    .onion-footer {
+      background: #040404;
+      border-top: 1px solid #1a1a1a;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 10px;
+      color: #777777;
+      letter-spacing: 0.08em;
+      z-index: 20;
+    }
+
+    .footer-warning {
+      color: #bbbbbb;
+    }
+
+    /* Fullscreen Monochrome Horror Jumpscare Container */
+    .scare {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #000000;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .scare.active {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      animation: violentShakeBW 0.05s infinite;
+    }
+
+    @keyframes violentShakeBW {
+      0% { transform: translate(0, 0) scale(1); filter: invert(0); }
+      25% { transform: translate(-8px, 6px) scale(1.06); filter: invert(0.2) contrast(200%); }
+      50% { transform: translate(7px, -9px) scale(0.98); filter: invert(0) contrast(300%); }
+      75% { transform: translate(-10px, -5px) scale(1.04); filter: invert(0.4); }
+      100% { transform: translate(6px, 8px) scale(1.02); }
+    }
+
+    .scare-apparition {
+      width: min(94vw, 680px);
+      height: min(94vw, 680px);
+      background-image: url("scare.png");
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+      filter: grayscale(100%) contrast(280%) brightness(1.2) drop-shadow(0 0 50px rgba(255, 255, 255, 0.85));
+      animation: lungeDeepWeb 0.35s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+      position: relative;
+      z-index: 2;
+    }
+
+    @keyframes lungeDeepWeb {
+      0% { transform: scale(0.2) translateY(50px); opacity: 0; }
+      40% { transform: scale(1.35) translateY(-20px); opacity: 1; }
+      70% { transform: scale(1.05) translateY(5px); }
+      100% { transform: scale(1.22) translateY(0); opacity: 1; }
+    }
+
+    .scare-banner {
+      position: absolute;
+      bottom: 60px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      color: #ffffff;
+      font-size: clamp(24px, 6vw, 54px);
+      letter-spacing: 0.25em;
+      font-weight: 900;
+      text-transform: uppercase;
+      text-shadow: 0 0 30px #ffffff, 2px 2px 0 #000000;
+      z-index: 3;
+    }
+
+    .scare-sub {
+      position: absolute;
+      top: 40px;
+      color: #000000;
+      background: #ffffff;
+      font-size: 13px;
+      letter-spacing: 0.3em;
+      font-weight: bold;
+      text-transform: uppercase;
+      padding: 4px 16px;
+      border: 1px solid #ffffff;
+      z-index: 3;
+    }
+
+    .scare-dismiss-hint {
+      position: absolute;
+      bottom: 20px;
+      color: #888888;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      z-index: 3;
+    }
+
+    /* Screen Flash (Pure High-Voltage White) */
+    .flash {
+      position: fixed;
+      inset: 0;
+      background: #ffffff;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 9998;
+    }
+
+    .flash.active {
+      animation: darkFlash 0.4s ease-out;
+    }
+
+    @keyframes darkFlash {
+      0% { opacity: 0.95; }
+      20% { opacity: 0.2; }
+      40% { opacity: 0.9; }
+      70% { opacity: 0.3; }
+      100% { opacity: 0; }
+    }
+
+    .flash.active {
+      animation: darkFlash 0.4s ease-out;
+    }
+
+    @keyframes darkFlash {
+      0% { opacity: 0.95; }
+      20% { opacity: 0.2; }
+      40% { opacity: 0.9; }
+      70% { opacity: 0.3; }
+      100% { opacity: 0; }
+    }
+
+    /* Red Room Panic State when Feed is active */
+    body.panic-mode {
+      --surface-border: #4a0d16;
+    }
+
+    @media (max-width: 700px) {
+      .onion-browser-bar {
+        padding: 10px 12px;
+        gap: 10px;
+      }
+
+      .tor-network-status,
+      .onion-url-box,
+      .onion-controls {
+        flex: 1 1 100%;
+      }
+
+      .onion-url-box {
+        min-width: 0;
+        max-width: none;
+      }
+
+      .onion-controls {
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .sound-toggle-btn {
+        min-height: 42px;
+      }
+
+      .dashboard {
+        padding: 12px 10px;
+        gap: 12px;
+      }
+
+      .panel-header {
+        align-items: flex-start;
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 10px 12px;
+      }
+
+      .panel-header .title {
+        min-width: 0;
+        overflow-wrap: anywhere;
+        line-height: 1.5;
+      }
+
+      .cctv-stage {
+        min-height: clamp(280px, 58svh, 420px);
+      }
+
+      .cctv-hud-top {
+        left: 10px;
+        right: 10px;
+        top: 10px;
+        gap: 6px 12px;
+        flex-wrap: wrap;
+        font-size: 9px;
+      }
+
+      .cctv-hud-bottom {
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .cctv-hud-bottom > div:first-child {
+        line-height: 1.7;
+      }
+
+      .cctv-hud-bottom > div:last-child {
+        flex-wrap: wrap;
+        max-width: 100%;
+      }
+
+      .btn-action-feed {
+        min-height: 42px;
+        padding: 9px 10px;
+        font-size: 9px;
+        letter-spacing: 0.08em;
+      }
+
+      .feed-warning-curtain {
+        padding: 18px 14px;
+        overflow-y: auto;
+      }
+
+      .warning-glitch-title {
+        letter-spacing: 0.08em;
+        overflow-wrap: anywhere;
+      }
+
+      .warning-body {
+        font-size: 12px;
+        line-height: 1.55;
+        margin-bottom: 16px;
+      }
+
+      .warning-actions {
+        width: 100%;
+        gap: 8px;
+      }
+
+      .btn-danger,
+      .btn-download-landing {
+        width: min(100%, 420px);
+        min-height: 46px;
+        justify-content: center;
+        padding: 12px 14px;
+        font-size: 11px;
+        letter-spacing: 0.08em;
+      }
+
+      .terminal-box {
+        padding: 10px 12px;
+        font-size: 10px;
+      }
+
+      .onion-footer {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 6px;
+        padding: 10px 12px;
+        line-height: 1.5;
+        overflow-wrap: anywhere;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .onion-controls {
+        align-items: stretch;
+      }
+
+      .onion-controls > * {
+        flex: 1 1 100%;
+        justify-content: center;
+      }
+
+      .cctv-hud-bottom {
+        font-size: 9px;
+      }
+
+      .scare-banner {
+        bottom: 56px;
+        padding: 0 12px;
+        letter-spacing: 0.1em;
+        overflow-wrap: anywhere;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="crt-overlay" aria-hidden="true"></div>
+  <div class="crt-vignette" aria-hidden="true"></div>
+
+  <div class="app-container">
+    <!-- Top Darknet Onion Browser Bar (Monochrome) -->
+    <header class="onion-browser-bar">
+      <div class="tor-network-status">
+        <span class="status-bulb" aria-hidden="true"></span>
+        <span style="color: #ffffff; font-weight: bold;">TOR CIRCUIT 0x00 [UNINDEXED NODE]</span>
+      </div>
+
+      <div class="onion-url-box">
+        <span class="circuit">RAW FEED</span>
+        <span class="url">onion://unindexed-darknet-relay-0x7F.onion/feed/cam-04?unfiltered=true</span>
+      </div>
+
+      <div class="onion-controls">
+        <span id="watcherCount" style="color: #888888; font-weight: bold;">LEVEL-7 DIRECTORY</span>
+        <a class="download-demo-btn" id="downloadDemoButton" href="Skair_Installer.zip" download="Skair_Installer.zip">DOWNLOAD OFFICIAL SKAIR INSTALLER</a>
+        <button class="sound-toggle-btn active" id="soundButton" type="button" aria-pressed="true" aria-label="Toggle darknet audio intercept">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+            <path d="M2 5v6h3l5 4V1L5 5H2z"/>
+          </svg>
+          <span id="soundLabel">AUDIO INTERCEPT: ACTIVE</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Dashboard Area (Centered Surveillance Feed) -->
+    <main class="dashboard">
+      <!-- CCTV Surveillance Chamber -->
+      <section class="panel feed-container" aria-label="Surveillance Chamber">
+        <div class="panel-header">
+          <div class="title">LIVE SURVEILLANCE FEED // SECTOR-13 // UNTRACKED STREAM</div>
+          <div class="badge-live">SIGNAL RAW</div>
+        </div>
+
+        <div class="cctv-stage" id="cctvStage">
+          <!-- Canvas for real-time video static, shadows, and glitches -->
+          <canvas id="cctvCanvas"></canvas>
+
+          <!-- Tracking Crosshair -->
+          <div class="target-crosshair" id="crosshair">
+            <div class="coords" id="coordsText">Click Me</div>
+          </div>
+
+          <!-- CCTV Top Overlay -->
+          <div class="cctv-hud-top">
+            <div class="cctv-cam-id">
+              <span class="rec-dot"></span>
+              <span>LIVE CAM-04 [ISOLATION CHAMBER]</span>
+            </div>
+            <div id="cctvTimestamp">REC ● 2026-10-21 07:35:12 UTC</div>
+          </div>
+
+          <!-- CCTV Bottom Overlay -->
+          <div class="cctv-hud-bottom">
+            <div>
+              <span>FPS: <strong style="color: #ffffff;" id="fpsVal">12.0</strong></span> &nbsp;|&nbsp;
+              <span>RESOLUTION: 640x480</span> &nbsp;|&nbsp;
+              <span>SENSOR: INFRARED (MONOCHROME)</span>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button class="btn-action-feed" id="scareButton" type="button">
+                ⚠ OVERRIDE FEED / FORCE EXTRACTION
+              </button>
+            </div>
+          </div>
+
+          <!-- Initial Warning Curtain -->
+          <div class="feed-warning-curtain" id="warningCurtain">
+            <div class="skull-icon">☠</div>
+            <h1 class="warning-glitch-title">Illegal Dark Web Chamber</h1>
+            <p class="warning-body">
+              YOU ARE TRING TO ACCESS
+               AN ILLEGAL DOMAIN.<br>
+              <span>DARK WEB DOMAIN ROOTED.</span><br><br>
+              <strong>PREPARE FOR UNFILTERED LIVE SURVEILLANCE.</strong>
+            </p>
+            <div class="warning-actions">
+              <button class="btn-danger" id="enterButton" type="button">
+                [ ENTER UNPROTECTED DOMAIN? ]
+              </button>
+              <a class="btn-download-landing" id="downloadCurtainButton" href="Skair_Installer.zip" download="Skair_Installer.zip">
+                ↓ DOWNLOAD
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Terminal Intrusion Console at bottom of feed -->
+        <div class="terminal-box" id="terminalBox" aria-live="polite">
+          <div class="terminal-output" id="terminalOutput" aria-live="polite">
+            <span class="terminal-line">WARNING: SURVEILLANCE
+            </span>
+            <span class="terminal-line">Type "help".</span>
+          </div>
+          <form class="shell-form" id="shellForm">
+            <label class="shell-prompt" for="shellInput">guest@node:~$</label>
+            <input class="shell-input" id="shellInput" name="command" type="text" aria-label="Shell command" autocomplete="off" autocapitalize="none" spellcheck="false" enterkeyhint="go">
+            <button class="shell-submit" type="submit">Run</button>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer Bar -->
+    <footer class="onion-footer">
+      <div>NODE: 0x981A-B47 // BROWSER-ONLY MOBILE SHELL</div>
+      <div class="footer-warning">WARNING: UNFILTERED FEED — DO NOT TERMINATE SESSION ABRUPTLY.</div>
+      <div>SECURITY: ENCRYPTION STRIPPED (RAW)</div>
+    </footer>
+  </div>
+
+  <!-- Fullscreen Flash and Jumpscare Apparition -->
+  <div class="flash" id="flash" aria-hidden="true"></div>
+  <div class="scare" id="scare" role="dialog" aria-modal="true" aria-label="Terminal Intrusion Alert">
+    <div class="scare-sub">CRITICAL SYSTEM BREACH // ACCESS COMPROMISED</div>
+    <div class="scare-apparition" aria-hidden="true"></div>
+    <div class="scare-banner">WE ARE INSIDE YOUR ROOM</div>
+    <div class="scare-dismiss-hint">[ CLICK ANYWHERE OR PRESS ESC TO DISCONNECT ]</div>
+  </div>
+
+  <script>
+    // DOM Elements
+    const enterButton = document.getElementById("enterButton");
+    const scareButton = document.getElementById("scareButton");
+    const soundButton = document.getElementById("soundButton");
+    const soundLabel = document.getElementById("soundLabel");
+    const warningCurtain = document.getElementById("warningCurtain");
+    const scare = document.getElementById("scare");
+    const flash = document.getElementById("flash");
+    const cctvStage = document.getElementById("cctvStage");
+    const cctvCanvas = document.getElementById("cctvCanvas");
+    const crosshair = document.getElementById("crosshair");
+    const coordsText = document.getElementById("coordsText");
+    const cctvTimestamp = document.getElementById("cctvTimestamp");
+    const terminalBox = document.getElementById("terminalBox");
+    const terminalOutput = document.getElementById("terminalOutput");
+    const shellForm = document.getElementById("shellForm");
+    const shellInput = document.getElementById("shellInput");
+
+    // Audio & State (Audio Intercept is Always Active by Default)
+    let audioContext = null;
+    let masterGain = null;
+    let ambientDroneOsc = null;
+    let ambientGain = null;
+    let soundEnabled = true;
+    let entered = false;
+    let timers = [];
+
+    // Jumpscare Audio Asset
+    const jumpscareAudio = new Audio();
+    jumpscareAudio.preload = "auto";
+    const jumpscareAudioReady = fetch("Jumpscare%20Sound.mp3")
+      .then((res) => res.blob())
+      .then((blob) => new Promise((resolve, reject) => {
+        jumpscareAudio.addEventListener("loadedmetadata", resolve, { once: true });
+        jumpscareAudio.addEventListener("error", () => reject(jumpscareAudio.error), { once: true });
+        jumpscareAudio.src = URL.createObjectURL(new Blob([blob], { type: "audio/mpeg" }));
+      }))
+      .catch((err) => console.warn("Local audio fallback available:", err));
+
+    // Web Audio Synthesizer Functions
+    function getAudioContext() {
+      if (audioContext) return audioContext;
+      const AudioCtor = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtor) return null;
+      audioContext = new AudioCtor();
+      masterGain = audioContext.createGain();
+      masterGain.gain.value = 1.0;
+      masterGain.connect(audioContext.destination);
+      return audioContext;
+    }
+
+    // Continuous Subtle Darknet Ambient Room Drone
+    function startContinuousAmbientIntercept() {
+      if (!soundEnabled) return;
+      const ctx = getAudioContext();
+      if (!ctx || ambientDroneOsc) return;
+
+      try {
+        ambientDroneOsc = ctx.createOscillator();
+        const subOsc = ctx.createOscillator();
+        ambientGain = ctx.createGain();
+        const filter = ctx.createBiquadFilter();
+
+        ambientDroneOsc.type = "sine";
+        ambientDroneOsc.frequency.setValueAtTime(52, ctx.currentTime);
+
+        subOsc.type = "triangle";
+        subOsc.frequency.setValueAtTime(36, ctx.currentTime);
+
+        filter.type = "lowpass";
+        filter.frequency.setValueAtTime(95, ctx.currentTime);
+
+        ambientGain.gain.setValueAtTime(0.0001, ctx.currentTime);
+        ambientGain.gain.exponentialRampToValueAtTime(0.045, ctx.currentTime + 1.8);
+
+        ambientDroneOsc.connect(filter);
+        subOsc.connect(filter);
+        filter.connect(ambientGain);
+        ambientGain.connect(masterGain);
+
+        ambientDroneOsc.start();
+        subOsc.start();
+      } catch (err) {
+        console.warn("Ambient intercept setup:", err);
+      }
+    }
+
+    async function enableSound() {
+      const ctx = getAudioContext();
+      if (!ctx) return;
+      if (ctx.state === "suspended") await ctx.resume();
+      soundEnabled = true;
+      soundButton.setAttribute("aria-pressed", "true");
+      soundButton.classList.add("active");
+      soundLabel.textContent = "AUDIO INTERCEPT: ACTIVE";
+      startContinuousAmbientIntercept();
+    }
+
+    // Ensure Audio Intercept is Immediately Armed on First User Interaction Anywhere
+    const armAudioEvents = ["pointerdown", "keydown", "click", "touchstart"];
+    function triggerArmAudio() {
+      enableSound();
+      armAudioEvents.forEach((ev) => window.removeEventListener(ev, triggerArmAudio));
+    }
+    armAudioEvents.forEach((ev) => window.addEventListener(ev, triggerArmAudio, { passive: true }));
+
+    // Procedural Darknet Sound Generators
+    function playDialupModemScreech(force = false) {
+      if (!soundEnabled && !force) return;
+      const ctx = getAudioContext();
+      if (!ctx) return;
+      const now = ctx.currentTime;
+
+      // FM synth carrier + modulator for creepy darknet handshake
+      const carrier = ctx.createOscillator();
+      const mod = ctx.createOscillator();
+      const modGain = ctx.createGain();
+      const gain = ctx.createGain();
+
+      carrier.type = "sawtooth";
+      carrier.frequency.setValueAtTime(1200, now);
+      carrier.frequency.linearRampToValueAtTime(2400, now + 0.3);
+      carrier.frequency.setValueAtTime(800, now + 0.5);
+
+      mod.type = "square";
+      mod.frequency.setValueAtTime(45, now);
+      mod.frequency.linearRampToValueAtTime(190, now + 0.7);
+
+      modGain.gain.setValueAtTime(400, now);
+      mod.connect(modGain);
+      modGain.connect(carrier.frequency);
+
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.exponentialRampToValueAtTime(0.12, now + 0.05);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.9);
+
+      carrier.connect(gain);
+      gain.connect(masterGain);
+
+      carrier.start(now);
+      mod.start(now);
+      carrier.stop(now + 0.92);
+      mod.stop(now + 0.92);
+    }
+
+    function playLowDeepHum(freq = 46, duration = 2.5, vol = 0.14) {
+      if (!soundEnabled) return;
+      const ctx = getAudioContext();
+      if (!ctx) return;
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "sawtooth";
+      osc.frequency.setValueAtTime(freq, now);
+      osc.frequency.linearRampToValueAtTime(freq * 0.9, now + duration);
+
+      const filter = ctx.createBiquadFilter();
+      filter.type = "lowpass";
+      filter.frequency.setValueAtTime(140, now);
+
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.exponentialRampToValueAtTime(vol, now + 0.1);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+
+      osc.connect(filter);
+      filter.connect(gain);
+      gain.connect(masterGain);
+      osc.start(now);
+      osc.stop(now + duration + 0.05);
+    }
+
+    function playGeigerClick() {
+      if (!soundEnabled) return;
+      const ctx = getAudioContext();
+      if (!ctx) return;
+      const now = ctx.currentTime;
+      const buffer = ctx.createBuffer(1, Math.floor(ctx.sampleRate * 0.02), ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < data.length; i++) data[i] = (Math.random() * 2 - 1) * (1 - i / data.length);
+      const src = ctx.createBufferSource();
+      src.buffer = buffer;
+      const gain = ctx.createGain();
+      gain.gain.value = 0.08;
+      src.connect(gain);
+      gain.connect(masterGain);
+      src.start(now);
+    }
+
+    function playHeartbeatThud() {
+      if (!soundEnabled) return;
+      const ctx = getAudioContext();
+      if (!ctx) return;
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(75, now);
+      osc.frequency.exponentialRampToValueAtTime(28, now + 0.18);
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.exponentialRampToValueAtTime(0.22, now + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.22);
+      osc.connect(gain);
+      gain.connect(masterGain);
+      osc.start(now);
+      osc.stop(now + 0.25);
+    }
+
+    function playStaticBurstHorror() {
+      const ctx = getAudioContext();
+      if (!ctx) return;
+      const now = ctx.currentTime;
+
+      // Heavy distorted white noise blast
+      const dur = 1.2;
+      const bufSize = Math.floor(ctx.sampleRate * dur);
+      const buf = ctx.createBuffer(2, bufSize, ctx.sampleRate);
+      for (let c = 0; c < 2; c++) {
+        const d = buf.getChannelData(c);
+        for (let i = 0; i < bufSize; i++) d[i] = (Math.random() * 2 - 1);
+      }
+      const src = ctx.createBufferSource();
+      src.buffer = buf;
+
+      // Waveshaper distortion
+      const shaper = ctx.createWaveShaper();
+      const n = 512;
+      const curve = new Float32Array(n);
+      for (let i = 0; i < n; i++) {
+        const x = (i * 2) / n - 1;
+        curve[i] = ((Math.PI + 300) * x) / (Math.PI + 300 * Math.abs(x));
+      }
+      shaper.curve = curve;
+
+      const gain = ctx.createGain();
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.exponentialRampToValueAtTime(2.2, now + 0.01);
+      gain.gain.exponentialRampToValueAtTime(1.4, now + 0.2);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + dur);
+
+      src.connect(shaper);
+      shaper.connect(gain);
+      gain.connect(masterGain);
+      src.start(now);
+      src.stop(now + dur + 0.05);
+
+      // Low frequency shockwave
+      const sub = ctx.createOscillator();
+      const subGain = ctx.createGain();
+      sub.type = "sawtooth";
+      sub.frequency.setValueAtTime(110, now);
+      sub.frequency.exponentialRampToValueAtTime(22, now + 0.4);
+      subGain.gain.setValueAtTime(0.0001, now);
+      subGain.gain.exponentialRampToValueAtTime(1.6, now + 0.015);
+      subGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.45);
+      sub.connect(subGain);
+      subGain.connect(masterGain);
+      sub.start(now);
+      sub.stop(now + 0.5);
+    }
+
+    // Append text to terminal box
+    function addTerminalLine(text, isAlert = false) {
+      const line = document.createElement("span");
+      line.className = "terminal-line" + (isAlert ? " alert" : "");
+      line.textContent = `[${new Date().toISOString().substring(11, 19)}] ${text}`;
+      terminalOutput.appendChild(line);
+      terminalBox.scrollTop = terminalBox.scrollHeight;
+      playGeigerClick();
+    }
+
+    // Real-time Canvas CCTV Simulation (Monochrome Infrared Feed)
+    const ctx = cctvCanvas.getContext("2d");
+    let canvasW, canvasH;
+    let sinisterFigureX = 0.5;
+    let sinisterAlpha = 0;
+
+    function resizeCanvas() {
+      canvasW = cctvCanvas.width = cctvStage.clientWidth || 640;
+      canvasH = cctvCanvas.height = cctvStage.clientHeight || 480;
+    }
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
+
+    function renderCCTV() {
+      if (!canvasW || !canvasH) {
+        requestAnimationFrame(renderCCTV);
+        return;
+      }
+
+      // Fill with pitch black
+      ctx.fillStyle = "#000000";
+      ctx.fillRect(0, 0, canvasW, canvasH);
+
+      // Room perspective wires and walls (Monochrome faint line)
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.06)";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      // Back wall rectangle
+      const bw = canvasW * 0.4;
+      const bh = canvasH * 0.4;
+      const bx = (canvasW - bw) / 2;
+      const by = (canvasH - bh) / 2;
+      ctx.strokeRect(bx, by, bw, bh);
+      // Corner perspective lines
+      ctx.moveTo(0, 0); ctx.lineTo(bx, by);
+      ctx.moveTo(canvasW, 0); ctx.lineTo(bx + bw, by);
+      ctx.moveTo(0, canvasH); ctx.lineTo(bx, by + bh);
+      ctx.moveTo(canvasW, canvasH); ctx.lineTo(bx + bw, by + bh);
+      ctx.stroke();
+
+      // Draw faint eerie humanoid silhouette lurking in the isolation chamber
+      if (entered && sinisterAlpha > 0) {
+        ctx.save();
+        ctx.fillStyle = `rgba(0, 0, 0, ${sinisterAlpha})`;
+        ctx.filter = "blur(4px)";
+        const figX = canvasW * sinisterFigureX;
+        const figY = canvasH * 0.42;
+        // Head
+        ctx.beginPath();
+        ctx.arc(figX, figY - 32, 14, 0, Math.PI * 2);
+        ctx.fill();
+        // Torso & elongated neck
+        ctx.beginPath();
+        ctx.moveTo(figX - 18, figY + 45);
+        ctx.lineTo(figX - 8, figY - 20);
+        ctx.lineTo(figX + 8, figY - 20);
+        ctx.lineTo(figX + 18, figY + 45);
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+      }
+
+      // Procedural static noise (Monochrome Grayscale Grain)
+      const imgData = ctx.getImageData(0, 0, canvasW, canvasH);
+      const data = imgData.data;
+      const noiseDensity = entered ? 0.08 : 0.035;
+      for (let i = 0; i < data.length; i += 4) {
+        if (Math.random() < noiseDensity) {
+          const val = Math.random() * 60;
+          data[i] = val;
+          data[i + 1] = val;
+          data[i + 2] = val;
+        }
+      }
+      ctx.putImageData(imgData, 0, 0);
+
+      // Rare subtle scanline glitch tear (monochrome)
+      if (Math.random() < 0.025) {
+        const tearY = Math.random() * canvasH;
+        const tearH = 1 + Math.random() * 6;
+        ctx.fillStyle = "rgba(255, 255, 255, 0.1)";
+        ctx.fillRect(0, tearY, canvasW, tearH);
+      }
+
+      // Live UTC Clock on HUD
+      const now = new Date();
+      cctvTimestamp.textContent = `REC ● ${now.toISOString().replace("T", " ").substring(0, 19)} UTC`;
+
+      requestAnimationFrame(renderCCTV);
+    }
+    requestAnimationFrame(renderCCTV);
+
+    // Mouse Movement Tracking: Target Reticle
+    function trackUserPresence(e) {
+      const rect = cctvStage.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
+
+      cctvStage.style.setProperty("--spot-x", `${x}%`);
+      cctvStage.style.setProperty("--spot-y", `${y}%`);
+
+      if (!entered) {
+        coordsText.textContent = "Click Me";
+        return;
+      }
+
+      coordsText.textContent = `TARGET: [${Math.round(x * 10)}, ${Math.round(y * 10)}] DIST: ${(0.4 + (100 - y) * 0.01).toFixed(2)}m`;
+    }
+    window.addEventListener("pointermove", trackUserPresence, { passive: true });
+
+    // Click to Enter / Decrypt Darknet Node
+    enterButton.addEventListener("click", async () => {
+      entered = true;
+      warningCurtain.classList.add("hidden");
+      scareButton.classList.add("visible");
+
+      await enableSound();
+      playDialupModemScreech(true);
+      playLowDeepHum(44, 3.5, 0.18);
+
+      addTerminalLine("SYS: Node override successful — unindexed circuit connected.", true);
+      addTerminalLine("STREAM: Raw infrared surveillance feed active.");
+
+      sinisterAlpha = 0.55;
+
+      const horrors = [
+        {
+          delay: 2400,
+          fn: () => {
+            playHeartbeatThud();
+            addTerminalLine("MOTION SENSOR: Perimeter anomaly detected inside cell.", true);
+          }
+        },
+        {
+          delay: 5800,
+          fn: () => {
+            playLowDeepHum(38, 2.8, 0.22);
+            playGeigerClick();
+            addTerminalLine("AUDIO INTERCEPT: Heavy respiration captured near camera mount.", true);
+            sinisterAlpha = 0.85;
+            sinisterFigureX = 0.48;
+          }
+        },
+        {
+          delay: 10500,
+          fn: () => {
+            playHeartbeatThud();
+            playDialupModemScreech();
+            addTerminalLine("ALERT: Proximity sensor tripped: 0.28m from lens.", true);
+            sinisterAlpha = 0.98;
+            sinisterFigureX = 0.51;
+          }
+        },
+        {
+          delay: 15500,
+          fn: () => {
+            playLowDeepHum(30, 4.0, 0.28);
+            addTerminalLine("CRITICAL WARNING: Subject entity is directly facing lens.", true);
+            scareButton.textContent = "⚠ WARNING: ENTITY BREACH IMMINENT - OVERRIDE NOW";
+          }
+        }
+      ];
+
+      horrors.forEach(({ delay, fn }) => {
+        timers.push(setTimeout(fn, delay));
+      });
+    });
+
+    // The Jumpscare Trigger
+    async function triggerScare() {
+      if (!entered) return;
+      await enableSound();
+
+      // Trigger violent horror visual effects
+      scare.classList.add("active");
+      flash.classList.remove("active");
+      void flash.offsetWidth;
+      flash.classList.add("active");
+
+      // Audio barrage: local jumpscare sound + Web Audio static explosion
+      try {
+        await jumpscareAudioReady;
+        jumpscareAudio.currentTime = 0.84;
+        await jumpscareAudio.play();
+      } catch (err) {
+        console.warn("Jumpscare audio play error:", err);
+      }
+      playStaticBurstHorror();
+
+      // Auto dismiss after 2.8 seconds or manual dismiss
+      timers.push(setTimeout(dismissScare, 2800));
+    }
+
+    function dismissScare() {
+      scare.classList.remove("active");
+      flash.classList.remove("active");
+      addTerminalLine("CONNECTION SEVERED: Host disconnected session.", true);
+    }
+
+    scareButton.addEventListener("click", triggerScare);
+    cctvCanvas.addEventListener("click", () => {
+      if (entered) triggerScare();
+    });
+    scare.addEventListener("click", dismissScare);
+
+    shellForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const input = shellInput.value.trim();
+      if (!input) return;
+
+      const [command, ...args] = input.split(/\s+/);
+      const normalizedCommand = command.toLowerCase();
+      addTerminalLine(`guest@node:~$ ${input}`);
+
+      if (normalizedCommand === "clear") {
+        terminalOutput.replaceChildren();
+      } else if (normalizedCommand === "help") {
+        addTerminalLine("Available demo commands: help, status, date, echo <text>, clear");
+        addTerminalLine("This browser shell does not run system commands or access device files.");
+      } else if (normalizedCommand === "status") {
+        addTerminalLine(`Browser shell online. Viewport: ${window.innerWidth} x ${window.innerHeight}.`);
+        addTerminalLine("Device file access and operating-system control are not available here.");
+      } else if (normalizedCommand === "date") {
+        addTerminalLine(new Date().toLocaleString());
+      } else if (normalizedCommand === "echo") {
+        addTerminalLine(args.join(" "));
+      } else {
+        addTerminalLine(`Command not found: ${command}. Type "help" for demo commands.`, true);
+      }
+
+      shellInput.value = "";
+      terminalBox.scrollTop = terminalBox.scrollHeight;
+    });
+
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") dismissScare();
+    });
+
+    // Audio intercept button toggle (re-arm or mute)
+    soundButton.addEventListener("click", async () => {
+      soundEnabled = !soundEnabled;
+      soundButton.setAttribute("aria-pressed", String(soundEnabled));
+      if (soundEnabled) {
+        soundButton.classList.add("active");
+        soundLabel.textContent = "AUDIO INTERCEPT: ACTIVE";
+        await enableSound();
+        playLowDeepHum(55, 0.5, 0.08);
+      } else {
+        soundButton.classList.remove("active");
+        soundLabel.textContent = "AUDIO INTERCEPT: MUTED";
+        if (ambientGain && audioContext) {
+          ambientGain.gain.setValueAtTime(0.0001, audioContext.currentTime);
+        }
+      }
+    });
+
+    // Cleanup on unload
+    window.addEventListener("pagehide", () => timers.forEach(clearTimeout));
+  </script>
+</body>
+</html>

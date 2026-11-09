@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tagpuan - Unified Remote Admin Console</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Socket.io with dual file:// and http:// support -->
+  <script>
+    if (window.location.protocol === 'file:') {
+      document.write('<script src="http://localhost:3000/socket.io/socket.io.js"><\/script>');
+      document.write('<script src="https://cdn.socket.io/4.8.0/socket.io.min.js"><\/script>');
+    } else {
+      document.write('<script src="/socket.io/socket.io.js"><\/script>');
+    }
+  </script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0fdf4',
+              500: '#22c55e',
+              600: '#16a34a',
+              900: '#14532d',
+            },
+            dark: {
+              800: '#181e24',
+              850: '#12171c',
+              900: '#0b0f13',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Custom scrollbar for terminal and tables */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #0b0f13; }
+    ::-webkit-scrollbar-thumb { background: #26313c; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #384654; }
+  </style>
+</head>
+<body class="bg-dark-900 text-slate-100 font-sans antialiased min-h-screen flex flex-col">
+
+  <!-- Top Navigation Bar -->
+  <header class="bg-dark-850 border-b border-slate-800 sticky top-0 z-50 px-4 lg:px-8 py-3 flex items-center justify-between">
+    <div class="flex items-center space-x-3">
+      <div class="h-9 w-9 rounded-lg bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 font-bold text-lg shadow-sm shadow-emerald-500/20">
+        T
+      </div>
+      <div>
+        <div class="flex items-center space-x-2">
+          <h1 class="font-bold text-base tracking-wide text-white">TAGPUAN</h1>
+          <span class="text-[10px] uppercase tracking-wider bg-slate-800 text-slate-400 px-2 py-0.5 rounded font-mono border border-slate-700">v2.0 Core</span>
+        </div>
+        <p class="text-xs text-slate-400 hidden sm:block">Unified Remote Administration &amp; Worker Broker</p>
+      </div>
+    </div>
+
+    <!-- Live Connection Status Pill -->
+    <div class="flex items-center space-x-3">
+      <div id="connectionPill" class="flex items-center space-x-2 px-3 py-1.5 rounded-full text-xs font-mono font-medium bg-amber-500/10 text-amber-400 border border-amber-500/30">
+        <span id="connectionDot" class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+        <span id="connectionLabel">CONNECTING...</span>
+      </div>
+      <button id="refreshBtn" class="px-3 py-1.5 text-xs bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 rounded-lg transition-colors flex items-center space-x-1.5">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+        <span class="hidden sm:inline">Refresh</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 lg:p-8 space-y-6">
+
+    <!-- Metrics Overview Grid -->
+    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <!-- Active Workers Metric -->
+      <div class="bg-dark-850 border border-slate-800 rounded-xl p-5 shadow-sm hover:border-slate-700 transition">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-semibold tracking-wider text-slate-400 uppercase">Active Workers</span>
+          <span class="p-2 bg-emerald-500/10 text-emerald-400 rounded-lg">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+          </span>
+        </div>
+        <div class="mt-3 flex items-baseline space-x-2">
+          <span id="metricActiveWorkers" class="text-3xl font-bold text-white">0</span>
+          <span class="text-xs text-slate-500">/ <span id="metricTotalWorkers">0</span> registered</span>
+        </div>
+        <div class="mt-2 text-xs text-emerald-400 flex items-center space-x-1">
+          <span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+          <span>Online in last 60s</span>
+        </div>
+      </div>
+
+      <!-- Pending UAC Requests Metric -->
+      <div class="bg-dark-850 border border-slate-800 rounded-xl p-5 shadow-sm hover:border-slate-700 transition">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-semibold tracking-wider text-slate-400 uppercase">Pending UAC</span>
+          <span class="p-2 bg-amber-500/10 text-amber-400 rounded-lg">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+          </span>
+        </div>
+        <div class="mt-3 flex items-baseline space-x-2">
+          <span id="metricPendingUac" class="text-3xl font-bold text-amber-400">0</span>
+          <span class="text-xs text-slate-500">requests</span>
+        </div>
+        <div class="mt-2 text-xs text-amber-400/80">Requires elevation review</div>
+      </div>
+
+      <!-- System Alerts Metric -->
+      <div class="bg-dark-850 border border-slate-800 rounded-xl p-5 shadow-sm hover:border-slate-700 transition">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-semibold tracking-wider text-slate-400 uppercase">System Alerts</span>
+          <span class="p-2 bg-rose-500/10 text-rose-400 rounded-lg">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+          </span>
+        </div>
+        <div class="mt-3 flex items-baseline space-x-2">
+          <span id="metricAlerts" class="text-3xl font-bold text-rose-400">0</span>
+          <span class="text-xs text-slate-500">logged</span>
+        </div>
+        <div class="mt-2 text-xs text-rose-400/80">Warnings and fault triggers</div>
+      </div>
+
+      <!-- Total Transmissions Metric -->
+      <div class="bg-dark-850 border border-slate-800 rounded-xl p-5 shadow-sm hover:border-slate-700 transition">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-semibold tracking-wider text-slate-400 uppercase">Total Events</span>
+          <span class="p-2 bg-blue-500/10 text-blue-400 rounded-lg">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"/></svg>
+          </span>
+        </div>
+        <div class="mt-3 flex items-baseline space-x-2">
+          <span id="metricTotalRequests" class="text-3xl font-bold text-white">0</span>
+          <span class="text-xs text-slate-500">in ledger</span>
+        </div>
+        <div class="mt-2 text-xs text-slate-400">Buffered safely in JSON store</div>
+      </div>
+    </section>
+
+    <!-- Main Grid: Real-time Requests Table + Registered Devices -->
+    <section class="bg-dark-850 border border-slate-800 rounded-xl shadow-sm overflow-hidden">
+      <div class="p-4 lg:p-5 border-b border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div>
+          <h2 class="font-bold text-white text-base">Incoming Remote Worker Requests</h2>
+          <p class="text-xs text-slate-400">Real-time telemetry and UAC events pushed by Python workers</p>
+        </div>
+        <!-- Search & Filter Controls -->
+        <div class="flex items-center space-x-2">
+          <input id="searchInput" type="text" placeholder="Filter by Device or Type..." class="bg-dark-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500 w-48 sm:w-64">
+          <select id="typeFilter" class="bg-dark-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
+            <option value="ALL">All Types</option>
+            <option value="UAC_REQUEST">UAC Only</option>
+            <option value="STATUS_UPDATE">Status Updates</option>
+            <option value="HEARTBEAT">Heartbeats</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Requests Feed Table -->
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs">
+          <thead class="bg-dark-900/60 text-slate-400 border-b border-slate-800 font-mono uppercase text-[11px]">
+            <tr>
+              <th class="py-3 px-4">Timestamp</th>
+              <th class="py-3 px-4">Device ID / Host</th>
+              <th class="py-3 px-4">Request Type</th>
+              <th class="py-3 px-4">Status</th>
+              <th class="py-3 px-4">Message / Payload</th>
+              <th class="py-3 px-4 text-right">Action</th>
+            </tr>
+          </thead>
+          <tbody id="requestsTableBody" class="divide-y divide-slate-800/60">
+            <!-- Populated dynamically -->
+            <tr>
+              <td colspan="6" class="py-8 text-center text-slate-500">
+                Waiting for incoming worker requests...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Live Streaming Log Terminal Component -->
+    <section class="bg-dark-850 border border-slate-800 rounded-xl shadow-sm overflow-hidden flex flex-col">
+      <div class="bg-dark-900 px-4 py-3 border-b border-slate-800 flex items-center justify-between">
+        <div class="flex items-center space-x-2">
+          <span class="w-3 h-3 rounded-full bg-rose-500/80 inline-block"></span>
+          <span class="w-3 h-3 rounded-full bg-amber-500/80 inline-block"></span>
+          <span class="w-3 h-3 rounded-full bg-emerald-500/80 inline-block"></span>
+          <span class="text-xs font-mono font-semibold text-slate-300 ml-2">LIVE STREAMING CONSOLE TERMINAL</span>
+        </div>
+        <div class="flex items-center space-x-3 text-xs">
+          <label class="flex items-center space-x-1.5 text-slate-400 cursor-pointer">
+            <input id="autoScrollToggle" type="checkbox" checked class="rounded bg-slate-800 border-slate-700 text-emerald-500 focus:ring-0">
+            <span>Auto-Scroll</span>
+          </label>
+          <button id="clearLogsBtn" class="text-slate-400 hover:text-slate-200 transition">Clear</button>
+        </div>
+      </div>
+      <!-- Terminal Body -->
+      <div id="terminalStream" class="bg-black/90 p-4 font-mono text-xs text-slate-300 h-64 overflow-y-auto space-y-1.5 leading-relaxed">
+        <div class="text-slate-500">[SYSTEM] Tagpuan Live Stream Console initialized. Awaiting worker frames...</div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-dark-850 border-t border-slate-800 py-3 px-6 text-center text-xs text-slate-500">
+    Tagpuan Remote Administrative Console &bull; Connected to Node.js &amp; Socket.io Broker
+  </footer>
+
+  <!-- Admin Controller Script (Dual relative and server support) -->
+  <script>
+    if (window.location.protocol === 'file:') {
+      document.write('<script src="./public/js/admin.js"><\/script>');
+      document.write('<script src="./js/admin.js"><\/script>');
+    } else {
+      document.write('<script src="/js/admin.js"><\/script>');
+    }
+  </script>
+</body>
+</html>

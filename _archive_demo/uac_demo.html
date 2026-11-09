@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Consent Prompt Demo</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: "Segoe UI", sans-serif;
+      background: #101312;
+      color: #eef2ef;
+    }
+
+    body {
+      display: grid;
+      min-height: 100vh;
+      margin: 0;
+      place-items: center;
+    }
+
+    main {
+      width: min(520px, calc(100% - 40px));
+      padding: 28px;
+      border: 1px solid #45534b;
+      background: #171d19;
+    }
+
+    h1 { margin-top: 0; font-size: 1.4rem; }
+    p { line-height: 1.55; }
+    .notice { color: #f0c674; }
+    button {
+      margin: 8px 8px 0 0;
+      padding: 9px 14px;
+      border: 1px solid #91a197;
+      background: #dce5df;
+      color: #111713;
+      font: inherit;
+      cursor: pointer;
+    }
+    button:hover { background: #ffffff; }
+    dialog {
+      width: min(420px, calc(100% - 48px));
+      border: 1px solid #64746a;
+      background: #202923;
+      color: #eef2ef;
+    }
+    dialog::backdrop { background: rgb(0 0 0 / 70%); }
+    #result { min-height: 1.5em; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Windows UAC Information</h1>
+    <p>Windows User Account Control (UAC) is built into Windows. There are no separate UAC files for website visitors to download.</p>
+    <p>To review the Windows setting, open Start and search for <strong>Change User Account Control settings</strong>.</p>
+    <p class="notice"><strong>Browser demo only.</strong> The prompt below is not a Windows security prompt and cannot grant administrator access.</p>
+    <p>The buttons only demonstrate a choice on this page. No commands run and no system settings change.</p>
+    <button id="showPrompt" type="button">Show simulated prompt</button>
+    <p id="result" aria-live="polite"></p>
+  </main>
+
+  <dialog id="consentDialog" aria-labelledby="dialogTitle">
+    <h2 id="dialogTitle">Simulated consent request</h2>
+    <p>This browser-only example does not request elevation or make changes to your device.</p>
+    <button id="demoContinue" type="button">Continue demo</button>
+    <button id="demoCancel" type="button">Cancel</button>
+  </dialog>
+
+  <script>
+    const consentDialog = document.getElementById("consentDialog");
+    const result = document.getElementById("result");
+
+    document.getElementById("showPrompt").addEventListener("click", () => {
+      consentDialog.showModal();
+    });
+    document.getElementById("demoContinue").addEventListener("click", () => {
+      consentDialog.close();
+      result.textContent = "Demo choice: continued. No system action was taken.";
+    });
+    document.getElementById("demoCancel").addEventListener("click", () => {
+      consentDialog.close();
+      result.textContent = "Demo choice: canceled. No system action was taken.";
+    });
+  </script>
+</body>
+</html>

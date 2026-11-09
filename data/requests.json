@@ -1,0 +1,24 @@
+{
+  "updatedAt": "2026-11-09T15:40:00.808Z",
+  "stats": {
+    "totalRequests": 1,
+    "alertsCount": 0
+  },
+  "requests": [
+    {
+      "id": "REQ-1794238800808-p1xia",
+      "deviceId": "NODE-DEMO-01",
+      "hostname": "WIN11-WORKSTATION",
+      "os": "Windows 11 Pro",
+      "type": "UAC_REQUEST",
+      "status": "PENDING",
+      "message": "User requested elevation for Task Manager debug session.",
+      "metadata": {
+        "user": "Administrator",
+        "priority": "HIGH"
+      },
+      "timestamp": "2026-11-09T15:40:00.808Z",
+      "epoch": 1794238800808
+    }
+  ]
+}

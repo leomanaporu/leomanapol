@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#11130f">
+  <meta name="description" content="An interactive night in the woods. Keep your light close.">
+  <meta property="og:title" content="The Hollow — Stay on the path">
+  <meta property="og:description" content="An interactive horror landing page set in a dark woodland.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>The Hollow — Stay on the path</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: dark;
+      --ink: #e5e0d3;
+      --muted: #a5a397;
+      --rust: #bd553e;
+      --night: #11130f;
+      --mono: "DM Mono", monospace;
+      --serif: "Cormorant Garamond", Georgia, serif;
+      --spot-x: 50%;
+      --spot-y: 48%;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      min-width: 320px;
+      min-height: 100svh;
+      margin: 0;
+      overflow-x: hidden;
+      background: var(--night);
+      color: var(--ink);
+      font-family: var(--serif);
+    }
+
+    button { font: inherit; }
+
+    .scene {
+      position: relative;
+      display: grid;
+      min-height: 100svh;
+      grid-template-rows: auto 1fr auto;
+      overflow: hidden;
+      isolation: isolate;
+      background-image:
+        linear-gradient(90deg, rgba(12, 14, 12, .93) 0%, rgba(12, 14, 12, .67) 36%, rgba(12, 14, 12, .16) 74%, rgba(12, 14, 12, .54) 100%),
+        linear-gradient(0deg, rgba(12, 14, 12, .92) 0%, transparent 28%, rgba(12, 14, 12, .2) 75%, rgba(12, 14, 12, .58) 100%),
+        url("https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&w=2400&q=88");
+      background-position: center, center, center 55%;
+      background-size: cover;
+      animation: arrive 1.6s ease-out both;
+    }
+
+    .scene::before, .scene::after { position: absolute; inset: 0; z-index: -1; content: ""; pointer-events: none; }
+    .scene::before {
+      background: radial-gradient(ellipse 17rem 15rem at var(--spot-x) var(--spot-y), rgba(235, 220, 158, .17), rgba(216, 203, 143, .045) 39%, transparent 73%);
+      transition: background .12s linear;
+    }
+    .scene::after {
+      z-index: 2;
+      opacity: .2;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.92' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.28'/%3E%3C/svg%3E");
+    }
+
+    .topbar, .bottombar {
+      position: relative;
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 27px clamp(22px, 5vw, 76px);
+      font: 10px var(--mono);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; color: var(--ink); }
+    .brand-mark { width: 8px; height: 8px; border: 1px solid var(--rust); border-radius: 50%; box-shadow: 0 0 13px var(--rust); }
+    .top-meta { color: #c0bcae; }
+
+    main {
+      position: relative;
+      z-index: 3;
+      display: flex;
+      width: min(100% - 44px, 1170px);
+      align-items: center;
+      justify-self: center;
+      padding: 48px 0 70px;
+    }
+
+    .copy { width: min(100%, 560px); animation: reveal 1.2s .3s both; }
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 0 0 25px;
+      color: #d67b64;
+      font: 10px var(--mono);
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+    .eyebrow::before { width: 30px; height: 1px; background: var(--rust); content: ""; }
+    h1 {
+      max-width: 570px;
+      margin: 0;
+      font-size: clamp(76px, 12vw, 150px);
+      font-weight: 400;
+      line-height: .76;
+    }
+    h1 span { display: block; padding-left: clamp(38px, 9vw, 118px); color: #c5bca6; font-style: italic; }
+    .intro {
+      max-width: 315px;
+      margin: 38px 0 0 clamp(4px, 5vw, 68px);
+      color: #cfccbf;
+      font-size: 21px;
+      line-height: 1.35;
+    }
+    .rule { width: 1px; height: 41px; margin: 21px 0 17px clamp(4px, 5vw, 68px); background: #b34e3c; }
+    .warning {
+      margin: 0 0 0 clamp(4px, 5vw, 68px);
+      color: #b6b2a5;
+      font: 10px/1.8 var(--mono);
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+      margin: 28px 0 0 clamp(4px, 5vw, 68px);
+    }
+    .button {
+      min-height: 47px;
+      padding: 0 18px;
+      border: 1px solid rgba(229, 224, 211, .48);
+      border-radius: 0;
+      background: rgba(14, 16, 13, .3);
+      color: var(--ink);
+      cursor: pointer;
+      font: 10px var(--mono);
+      letter-spacing: .11em;
+      text-transform: uppercase;
+      transition: background .2s, border-color .2s, color .2s;
+    }
+    .button:hover { border-color: var(--ink); background: rgba(229, 224, 211, .09); }
+    .button:focus-visible { outline: 2px solid #df8b71; outline-offset: 4px; }
+    .button-primary { border-color: var(--rust); background: #8d382d; color: #fff5e8; }
+    .button-primary:hover { border-color: #db8067; background: #a24434; }
+    .button-scare { display: none; border-color: #8e4539; color: #e9a18e; }
+    .button-scare.visible { display: inline-flex; align-items: center; gap: 10px; }
+    .button-scare::before { width: 6px; height: 6px; border-radius: 50%; background: currentColor; content: ""; box-shadow: 0 0 9px currentColor; }
+
+    .bottombar { color: #aaa99c; }
+    .coordinates { display: flex; gap: 27px; }
+    .coordinates span:last-child { color: #d07963; }
+    .sound-control { display: inline-flex; align-items: center; gap: 9px; border: 0; background: none; color: inherit; cursor: pointer; font: inherit; letter-spacing: inherit; text-transform: uppercase; }
+    .sound-icon { width: 14px; height: 14px; }
+    .sound-control:focus-visible { outline: 1px solid var(--ink); outline-offset: 5px; }
+
+    .status {
+      position: fixed;
+      z-index: 4;
+      right: clamp(22px, 5vw, 76px);
+      bottom: 83px;
+      width: 175px;
+      color: #ccc7b8;
+      text-align: right;
+      font: 9px/1.8 var(--mono);
+      letter-spacing: .1em;
+      opacity: 0;
+      transition: opacity .6s;
+      text-transform: uppercase;
+    }
+    .status.visible { opacity: .78; }
+    .status span { display: block; color: #d17862; }
+
+    .scare {
+      position: fixed;
+      z-index: 10;
+      inset: 0;
+      display: grid;
+      visibility: hidden;
+      place-items: center;
+      overflow: hidden;
+      background: rgba(0, 0, 0, .96);
+      opacity: 0;
+      cursor: pointer;
+    }
+    .scare::before, .scare::after { position: absolute; inset: 0; content: ""; pointer-events: none; }
+    .scare::before { z-index: 1; background: repeating-linear-gradient(0deg, transparent 0 3px, rgba(255,255,255,.04) 4px 5px); }
+    .scare::after { z-index: 2; background: radial-gradient(ellipse, transparent 30%, rgba(0, 0, 0, .82) 100%); }
+    .scare.active { visibility: visible; animation: slam .12s steps(2, end) forwards; }
+    .apparition {
+      position: relative;
+      z-index: 0;
+      width: min(92vw, 520px);
+      height: min(92vw, 520px);
+      transform: scale(.18) translateY(20%);
+      filter: drop-shadow(0 0 28px rgba(255, 255, 255, .12));
+      background-image: url("scare.png");
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+      animation: lunge .42s cubic-bezier(.15,.82,.2,1) both;
+    }
+    .scary-text {
+      position: absolute;
+      bottom: 52px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: rgba(255,255,255,.7);
+      font: 10px var(--mono);
+      letter-spacing: .36em;
+      text-transform: uppercase;
+      text-align: center;
+      text-shadow: 0 0 12px rgba(255,255,255,.2);
+    }
+    .close-hint { position: absolute; z-index: 3; right: 20px; bottom: 18px; color: #87977f; font: 9px var(--mono); letter-spacing: .14em; }
+    .flash { position: fixed; z-index: 9; inset: 0; background: #b9ff8b; opacity: 0; pointer-events: none; }
+    .flash.active { animation: flash .35s steps(2, end) both; }
+
+    @keyframes arrive { from { filter: brightness(.2); } to { filter: brightness(1); } }
+    @keyframes reveal { from { opacity: 0; transform: translateY(17px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes slam { 0% { opacity: 0; } 20% { opacity: 1; } 42% { opacity: .62; } 63% { opacity: 1; } 100% { opacity: 1; } }
+    @keyframes lunge { 0% { transform: scale(.18) translateY(42%); } 58% { transform: scale(1.2) translateY(-2%); } 76% { transform: scale(.96) translateY(1%); } 100% { transform: scale(1) translateY(0); } }
+    @keyframes rock { from { transform: rotate(-3deg) translateY(0); } to { transform: rotate(3deg) translateY(-3px); } }
+    @keyframes flash { 0%, 14%, 34% { opacity: .94; } 8%, 24%, 100% { opacity: 0; } }
+    @media (max-width: 620px) {
+      .topbar, .bottombar { padding: 20px 22px; }
+      .top-meta { max-width: 132px; text-align: right; line-height: 1.7; }
+      main { align-items: center; padding: 37px 0 72px; }
+      h1 { font-size: clamp(76px, 22vw, 118px); }
+      .intro { margin-top: 32px; font-size: 19px; }
+      .bottombar { align-items: flex-end; }
+      .coordinates { flex-direction: column; gap: 5px; }
+      .status { right: 22px; bottom: 104px; }
+      .apparition { width: min(92vw, 440px); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="scene" id="scene">
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark" aria-hidden="true"></span><span>Field recording 08</span></div>
+      <div class="top-meta">Blackwood Forest<br>October 31 · 2:17 AM</div>
+    </header>
+
+    <main>
+      <section class="copy" aria-labelledby="title">
+        <p class="eyebrow">Tagpuan ng mga Tikbalang</p>
+        <h1 id="title">What the<span>Helly</span></h1>
+        <p class="intro">The trees are listening.<br>Something is walking behind you.</p>
+        <div class="rule" aria-hidden="true"></div>
+        <p class="warning">A website by Leo Manapol.<br>Designed to be experienced with headphones.</p>
+        <div class="controls">
+          <button class="button button-primary" id="enterButton" type="button">Enter the woods</button>
+          <button class="button button-scare" id="scareButton" type="button">Make it appear</button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="bottombar">
+      <div class="coordinates"><span>51° 30' 26.4" N</span><span>No signal</span></div>
+      <button class="sound-control" id="soundButton" type="button" aria-pressed="false" aria-label="Turn sound on">
+        <svg class="sound-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 6v4h3l4 3V3L5 6H2Z" stroke="currentColor" stroke-width="1"/><path d="m12 6 3 4m0-4-3 4" stroke="currentColor" stroke-width="1"/></svg>
+        <span id="soundLabel">Sound off</span>
+      </button>
+    </footer>
+    <div class="status" id="status" aria-live="polite">Tagpuan<span>of Underworlds.</span></div>
+  </div>
+
+  <div class="flash" id="flash" aria-hidden="true"></div>
+  <div class="scare" id="scare" role="dialog" aria-modal="true" aria-label="A terrifying face in the dark">
+    <div class="apparition" aria-hidden="true"></div>
+    <div class="scary-text">DON'T LOOK AWAY</div>
+    <div class="close-hint">CLICK OR PRESS ESC TO LEAVE</div>
+  </div>
+
+  <script>
+    const scene = document.getElementById("scene");
+    const enterButton = document.getElementById("enterButton");
+    const scareButton = document.getElementById("scareButton");
+    const soundButton = document.getElementById("soundButton");
+    const soundLabel = document.getElementById("soundLabel");
+    const scare = document.getElementById("scare");
+    const flash = document.getElementById("flash");
+    const status = document.getElementById("status");
+    let audioContext;
+    let masterGain;
+    let soundEnabled = false;
+    let entered = false;
+    let timerIds = [];
+    const jumpscareAudio = new Audio();
+    jumpscareAudio.preload = "auto";
+    const jumpscareAudioReady = fetch("Jumpscare%20Sound.mp3")
+      .then((response) => response.blob())
+      .then((blob) => new Promise((resolve, reject) => {
+        jumpscareAudio.addEventListener("loadedmetadata", resolve, { once: true });
+        jumpscareAudio.addEventListener("error", () => reject(jumpscareAudio.error), { once: true });
+        jumpscareAudio.src = URL.createObjectURL(new Blob([blob], { type: "audio/mpeg" }));
+      }));
+
+    async function playJumpscareSfx() {
+      try {
+        await jumpscareAudioReady;
+        jumpscareAudio.currentTime = 0.84;
+        await jumpscareAudio.play();
+      } catch (error) {
+        console.warn("Could not play jumpscare sound:", error);
+      }
+    }
+
+    async function enableSound() {
+      const ctx = getAudioContext();
+      if (!ctx) return;
+      if (ctx.state === "suspended") await ctx.resume();
+      soundEnabled = true;
+      soundButton.setAttribute("aria-pressed", "true");
+      soundButton.setAttribute("aria-label", "Turn sound off");
+      soundLabel.textContent = "Sound on";
+    }
+
+    function getAudioContext() {
+      if (audioContext) return audioContext;
+      const AudioCtor = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtor) return null;
+      audioContext = new AudioCtor();
+      masterGain = audioContext.createGain();
+      masterGain.gain.value = 1.2;
+      masterGain.connect(audioContext.destination);
+      return audioContext;
+    }
+
+    function playDrone(frequency, duration, volume, type = "sine", force = false) {
+      if (!soundEnabled && !force) return;
+      const ctx = getAudioContext();
+      if (!ctx) return;
+      const oscillator = ctx.createOscillator();
+      const gain = ctx.createGain();
+      oscillator.type = type;
+      oscillator.frequency.setValueAtTime(frequency, ctx.currentTime);
+      gain.gain.setValueAtTime(.0001, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(volume * 1.8, ctx.currentTime + .06);
+      gain.gain.exponentialRampToValueAtTime(.0001, ctx.currentTime + duration);
+      oscillator.connect(gain);
+      gain.connect(masterGain || ctx.destination);
+      oscillator.start();
+      oscillator.stop(ctx.currentTime + duration + .02);
+    }
+
+    function playEerieTone(frequency, duration, volume, type = "triangle", force = false) {
+      if (!soundEnabled && !force) return;
+      const ctx = getAudioContext();
+      if (!ctx) return;
+      const oscillator = ctx.createOscillator();
+      const gain = ctx.createGain();
+      oscillator.type = type;
+      oscillator.frequency.setValueAtTime(frequency, ctx.currentTime);
+      oscillator.frequency.linearRampToValueAtTime(frequency * 0.72, ctx.currentTime + duration);
+      gain.gain.setValueAtTime(0.0001, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(volume * 1.7, ctx.currentTime + 0.08);
+      gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration);
+      oscillator.connect(gain);
+      gain.connect(masterGain || ctx.destination);
+      oscillator.start();
+      oscillator.stop(ctx.currentTime + duration + 0.03);
+    }
+
+    function playHiss(duration = 1.4, volume = 0.08, force = false) {
+      if (!soundEnabled && !force) return;
+      const ctx = getAudioContext();
+      if (!ctx) return;
+      const now = ctx.currentTime;
+      const buffer = ctx.createBuffer(1, Math.max(1, Math.floor(ctx.sampleRate * duration)), ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < data.length; i++) {
+        data[i] = (Math.random() * 2 - 1) * (1 - i / data.length);
+      }
+      const source = ctx.createBufferSource();
+      source.buffer = buffer;
+      const filter = ctx.createBiquadFilter();
+      filter.type = "highpass";
+      filter.frequency.setValueAtTime(1600, now);
+      filter.Q.value = 0.8;
+      const gain = ctx.createGain();
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.exponentialRampToValueAtTime(volume * 1.9, now + 0.05);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+      source.connect(filter);
+      filter.connect(gain);
+      gain.connect(masterGain || ctx.destination);
+      source.start(now);
+      source.stop(now + duration + 0.02);
+    }
+
+    function playEscapeWhoosh(force = false) {
+      if (!soundEnabled && !force) return;
+      const ctx = getAudioContext();
+      if (!ctx) return;
+      const now = ctx.currentTime;
+      const oscillator = ctx.createOscillator();
+      const gain = ctx.createGain();
+      oscillator.type = "sawtooth";
+      oscillator.frequency.setValueAtTime(320, now);
+      oscillator.frequency.exponentialRampToValueAtTime(820, now + 0.45);
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.exponentialRampToValueAtTime(0.25, now + 0.04);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.52);
+      oscillator.connect(gain);
+      gain.connect(masterGain || ctx.destination);
+      oscillator.start(now);
+      oscillator.stop(now + 0.55);
+
+      const noiseBuffer = ctx.createBuffer(1, Math.floor(ctx.sampleRate * 0.7), ctx.sampleRate);
+      const noiseData = noiseBuffer.getChannelData(0);
+      for (let i = 0; i < noiseData.length; i++) noiseData[i] = Math.random() * 2 - 1;
+      const noiseSource = ctx.createBufferSource();
+      noiseSource.buffer = noiseBuffer;
+      const noiseFilter = ctx.createBiquadFilter();
+      noiseFilter.type = "lowpass";
+      noiseFilter.frequency.setValueAtTime(2800, now);
+      noiseFilter.Q.value = 0.5;
+      const noiseGain = ctx.createGain();
+      noiseGain.gain.setValueAtTime(0.0001, now);
+      noiseGain.gain.exponentialRampToValueAtTime(0.18, now + 0.1);
+      noiseGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.62);
+      noiseSource.connect(noiseFilter);
+      noiseFilter.connect(noiseGain);
+      noiseGain.connect(masterGain || ctx.destination);
+      noiseSource.start(now);
+      noiseSource.stop(now + 0.7);
+    }
+
+    function playStaticBurst(force = false) {
+      if (!soundEnabled && !force) return;
+      const ctx = getAudioContext();
+      if (!ctx) return;
+      const now = ctx.currentTime;
+
+      // --- Waveshaper distortion curve (hard clip) ---
+      function makeDistortionCurve(amount) {
+        const n = 512;
+        const curve = new Float32Array(n);
+        for (let i = 0; i < n; i++) {
+          const x = (i * 2) / n - 1;
+          curve[i] = ((Math.PI + amount) * x) / (Math.PI + amount * Math.abs(x));
+        }
+        return curve;
+      }
+
+      // Layer 1 — Full-band white noise (the main static wall)
+      const dur1 = 0.85;
+      const buf1Size = Math.floor(ctx.sampleRate * dur1);
+      const buf1 = ctx.createBuffer(2, buf1Size, ctx.sampleRate);
+      for (let ch = 0; ch < 2; ch++) {
+        const d = buf1.getChannelData(ch);
+        for (let i = 0; i < buf1Size; i++) d[i] = Math.random() * 2 - 1;
+      }
+      const src1 = ctx.createBufferSource();
+      src1.buffer = buf1;
+      const dist1 = ctx.createWaveShaper();
+      dist1.curve = makeDistortionCurve(320);
+      dist1.oversample = "4x";
+      const gain1 = ctx.createGain();
+      gain1.gain.setValueAtTime(0.0001, now);
+      gain1.gain.exponentialRampToValueAtTime(2.1, now + 0.018);
+      gain1.gain.exponentialRampToValueAtTime(1.6, now + 0.14);
+      gain1.gain.exponentialRampToValueAtTime(0.0001, now + dur1);
+      src1.connect(dist1);
+      dist1.connect(gain1);
+      gain1.connect(masterGain || ctx.destination);
+      src1.start(now);
+      src1.stop(now + dur1 + 0.02);
+
+      // Layer 2 — High-frequency screech (the piercing TV-static top end)
+      const dur2 = 0.55;
+      const buf2Size = Math.floor(ctx.sampleRate * dur2);
+      const buf2 = ctx.createBuffer(1, buf2Size, ctx.sampleRate);
+      const d2 = buf2.getChannelData(0);
+      for (let i = 0; i < buf2Size; i++) d2[i] = Math.random() * 2 - 1;
+      const src2 = ctx.createBufferSource();
+      src2.buffer = buf2;
+      const hp = ctx.createBiquadFilter();
+      hp.type = "highpass";
+      hp.frequency.setValueAtTime(6500, now);
+      hp.Q.value = 1.4;
+      const gain2 = ctx.createGain();
+      gain2.gain.setValueAtTime(0.0001, now);
+      gain2.gain.exponentialRampToValueAtTime(1.5, now + 0.02);
+      gain2.gain.exponentialRampToValueAtTime(0.0001, now + dur2);
+      src2.connect(hp);
+      hp.connect(gain2);
+      gain2.connect(masterGain || ctx.destination);
+      src2.start(now);
+      src2.stop(now + dur2 + 0.02);
+
+      // Layer 3 — Sub-bass thud (the gut-punch on impact)
+      const osc = ctx.createOscillator();
+      const osc2 = ctx.createOscillator();
+      const gainOsc = ctx.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(90, now);
+      osc.frequency.exponentialRampToValueAtTime(28, now + 0.22);
+      osc2.type = "square";
+      osc2.frequency.setValueAtTime(48, now);
+      osc2.frequency.exponentialRampToValueAtTime(22, now + 0.18);
+      gainOsc.gain.setValueAtTime(0.0001, now);
+      gainOsc.gain.exponentialRampToValueAtTime(1.1, now + 0.012);
+      gainOsc.gain.exponentialRampToValueAtTime(0.0001, now + 0.28);
+      osc.connect(gainOsc);
+      osc2.connect(gainOsc);
+      gainOsc.connect(masterGain || ctx.destination);
+      osc.start(now);
+      osc.stop(now + 0.3);
+      osc2.start(now);
+      osc2.stop(now + 0.3);
+
+      // Layer 4 — Mid crackle stutters (classic radio static pops)
+      for (let s = 0; s < 5; s++) {
+        const popDur = 0.04 + Math.random() * 0.06;
+        const popBufSize = Math.floor(ctx.sampleRate * popDur);
+        const popBuf = ctx.createBuffer(1, popBufSize, ctx.sampleRate);
+        const pd = popBuf.getChannelData(0);
+        for (let i = 0; i < popBufSize; i++) pd[i] = Math.random() * 2 - 1;
+        const popSrc = ctx.createBufferSource();
+        popSrc.buffer = popBuf;
+        const popBP = ctx.createBiquadFilter();
+        popBP.type = "bandpass";
+        popBP.frequency.setValueAtTime(800 + Math.random() * 2400, now);
+        popBP.Q.value = 0.6;
+        const popGain = ctx.createGain();
+        const popTime = now + Math.random() * 0.3;
+        popGain.gain.setValueAtTime(0.0001, popTime);
+        popGain.gain.exponentialRampToValueAtTime((0.9 + Math.random() * 0.8) * 1.35, popTime + 0.008);
+        popGain.gain.exponentialRampToValueAtTime(0.0001, popTime + popDur);
+        popSrc.connect(popBP);
+        popBP.connect(popGain);
+        popGain.connect(masterGain || ctx.destination);
+        popSrc.start(popTime);
+        popSrc.stop(popTime + popDur + 0.02);
+      }
+    }
+
+    async function triggerScare() {
+      if (!entered) return;
+      await enableSound();
+      const ctx = getAudioContext();
+      if (!ctx) return;
+      scare.classList.add("active");
+      flash.classList.remove("active");
+      void flash.offsetWidth;
+      flash.classList.add("active");
+      playJumpscareSfx();
+      playStaticBurst(true);
+      playDrone(72, .85, .22, "sawtooth", true);
+      playDrone(43, 1.1, .3, "square", true);
+      window.setTimeout(() => scare.classList.remove("active"), 2200);
+    }
+
+    function leaveScare() {
+      scare.classList.remove("active");
+      flash.classList.remove("active");
+      playEscapeWhoosh();
+    }
+
+    enterButton.addEventListener("click", async () => {
+      entered = true;
+      enterButton.hidden = true;
+      scareButton.classList.add("visible");
+      status.classList.add("visible");
+      await enableSound();
+      playDrone(58, 1.4, .055);
+      playHiss(1.8, 0.05);
+      playEerieTone(92, 2.2, 0.045);
+      const whispers = [
+        [7000, "Something moved between the trees."],
+        [16000, "You hear breathing. Not yours."],
+        [29000, "Don't turn around."]
+      ];
+      timerIds = whispers.map(([delay, message]) => window.setTimeout(() => {
+        status.innerHTML = `${message}<span>Keep walking.</span>`;
+        playDrone(42, 2.2, .08);
+        playHiss(1.1, 0.06);
+        playEerieTone(68, 1.8, 0.05);
+      }, delay));
+    });
+
+    scareButton.addEventListener("click", triggerScare);
+    scare.addEventListener("click", leaveScare);
+    window.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") leaveScare();
+      if (event.key === "Enter" && document.activeElement === document.body && entered) triggerScare();
+    });
+
+    soundButton.addEventListener("click", async () => {
+      soundEnabled = !soundEnabled;
+      soundButton.setAttribute("aria-pressed", String(soundEnabled));
+      soundButton.setAttribute("aria-label", soundEnabled ? "Turn sound off" : "Turn sound on");
+      soundLabel.textContent = soundEnabled ? "Sound on" : "Sound off";
+      if (soundEnabled) {
+        const ctx = getAudioContext();
+        if (ctx && ctx.state === "suspended") await ctx.resume();
+        playDrone(55, .45, .04);
+      }
+    });
+
+    function aimLight(event) {
+      const x = event.clientX / window.innerWidth * 100;
+      const y = event.clientY / window.innerHeight * 100;
+      scene.style.setProperty("--spot-x", `${x}%`);
+      scene.style.setProperty("--spot-y", `${y}%`);
+    }
+    window.addEventListener("pointermove", aimLight, { passive: true });
+
+    window.addEventListener("pagehide", () => timerIds.forEach(window.clearTimeout));
+  </script>
+</body>
+</html>
